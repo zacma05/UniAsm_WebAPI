@@ -6,7 +6,7 @@ GO
 -- 1. Tạo bảng tblAccount
 CREATE TABLE tblAccount
 (
-    AccountID INT PRIMARY KEY,
+    AccountID INT PRIMARY KEY IDENTITY(1,1),
     UserName NVARCHAR(255),
     Passwd VARCHAR(255),
     UserAddress NVARCHAR(255),
@@ -17,7 +17,7 @@ CREATE TABLE tblAccount
 -- 2. Tạo bảng tblProduct
 CREATE TABLE tblProduct
 (
-    ProductID INT PRIMARY KEY,
+    ProductID INT PRIMARY KEY IDENTITY(1,1),
     ProductName NVARCHAR(255),
     Category NVARCHAR(100),
     Price DECIMAL(18, 2),
@@ -31,7 +31,7 @@ CREATE TABLE tblProduct
 -- 3. Tạo bảng tblInvoice
 CREATE TABLE tblInvoice
 (
-    InvoiceID INT PRIMARY KEY,
+    InvoiceID INT PRIMARY KEY IDENTITY(1,1),
     AccountID INT,
     TotalPayment DECIMAL(18, 2),
     InvoiceState NVARCHAR(50),
@@ -41,7 +41,7 @@ CREATE TABLE tblInvoice
 -- 4. Tạo bảng tblPayment
 CREATE TABLE tblPayment
 (
-    PaymentID INT PRIMARY KEY,
+    PaymentID INT PRIMARY KEY IDENTITY(1,1),
     InvoiceID INT,
     Paying_method NVARCHAR(100),
     Paying_date DATE,
@@ -51,7 +51,7 @@ CREATE TABLE tblPayment
 -- 5. Tạo bảng tblOrder
 CREATE TABLE tblOrder
 (
-    OrderID INT PRIMARY KEY,
+    OrderID INT PRIMARY KEY IDENTITY(1,1),
     DeliveryMethod NVARCHAR(100),
     InvoiceID INT,
     OrderAddress NVARCHAR(255),
@@ -62,7 +62,7 @@ CREATE TABLE tblOrder
 -- 6. Tạo bảng tblInvoiceDetail
 CREATE TABLE tblInvoiceDetail
 (
-    InvoiceDetailID INT PRIMARY KEY,
+    InvoiceDetailID INT PRIMARY KEY IDENTITY(1,1),
     InvoiceID INT,
     ProductID INT,
     Quantity INT,

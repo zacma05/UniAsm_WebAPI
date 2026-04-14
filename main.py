@@ -1,10 +1,6 @@
 import secrets
 import pyodbc
-<<<<<<< HEAD
-import flask
-=======
 from flask import Flask, render_template, request, jsonify
->>>>>>> zacma05-master
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -13,11 +9,67 @@ CORS(app)
 cn_str = 'DRIVER={ODBC Driver 17 for SQL Server};SERVER=DATPHUNG;DATABASE=Fruitables;Trusted_Connection=yes'
 conn = pyodbc.connect(cn_str)
 
-# account management
+#lưu danh sách các token để authorize về sau
+tokens = {}
+
+# login
 @app.route("/login")
-def login_page():
+def register_page():
     return render_template("login.html")
 
+
+# register
+@app.route("/register", methods=["POST", "GET"])
+def login_page():
+    try:
+        if request.method == "GET":
+            return render_template("register.html")
+        data = request.get_json()
+
+        username = data.get("username")
+        password = data.get("password")
+        phone = data.get("phone")
+        address = data.get("address")
+
+        cursor = conn.cursor()
+
+        #kiem tra xem có tài khoản nào trùng tên chưa
+        cursor.execute(
+            "SELECT AccountID FROM tblAccount WHERE UserName = ? ",
+            (username,)
+        )
+
+        if cursor.fetchone():
+            return jsonify({"error": "Tên người dùng đã tồn tại"}), 409
+
+        
+        cursor.execute(
+            "INSERT INTO tblAccount "
+            "(UserName, Passwd, UserAddress, Phone, AccountRole) " \
+            "VALUES ( ? , ? , ? , ? , 'USER');", (username, password, address, phone)
+        )
+        conn.commit()
+        
+        # lay ra id của tài khoản vừa tạo rồi gán token cho nó
+        cursor.execute(
+            "SELECT AccountID FROM tblAccount WHERE UserName = ? AND Passwd = ?",
+            (username, password)
+        )
+
+        row = cursor.fetchone()
+
+        token = secrets.token_hex(32)
+        tokens[token] = row[0]
+
+        return jsonify({
+            "message": "register success",
+            "token": token,
+            "user": row[0]
+        })
+    except Exception as e:         
+        print(e)
+        return str(e), 500
+    
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -25,14 +77,14 @@ def home():
 
 @app.route("/login", methods=["POST"])
 def login():
-    # Dùng request trực tiếp vì đã import ở trên
-    data = request.get_json(force=True)
+    data = request.get_json()
+
     username = data.get("username")
     password = data.get("password")
 
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT * FROM tblAccount WHERE AccountID = ? AND Password = ?",
+        "SELECT AccountID FROM tblAccount WHERE UserName = ? AND Passwd = ?",
         (username, password)
     )
 
@@ -42,6 +94,7 @@ def login():
         return jsonify({"error": "Sai tài khoản"}), 401
 
     token = secrets.token_hex(32)
+    tokens[token] = row[0]
 
     return jsonify({
         "message": "login success",
@@ -49,11 +102,12 @@ def login():
         "user": row[0]
     })
 
-<<<<<<< HEAD
-@app.route("/shop")
-def route_page():
-    return flask.render_template("shop.html")
-=======
+@app.route("/cart")
+def cart_page():
+    return render_template("cart")
+
+
+
 @app.route('/product/getProductsByCate', methods=['GET'])
 def get_products():
     # Lấy tham số 'cat' từ URL
@@ -76,17 +130,12 @@ def get_products():
 @app.route("/shop")
 def route_page():
     return render_template("shop.html")
->>>>>>> zacma05-master
 
 
 # API lấy danh sách sản phẩm cho file shop.js của bạn
 # API lấy danh sách sản phẩm
-@app.route("/api/products", methods=["GET"])
-<<<<<<< HEAD
-def get_products():
-=======
+@app.route("/product/getAllProducts", methods=["GET"])
 def get_all_products():
->>>>>>> zacma05-master
     cursor = conn.cursor()
     
     cursor.execute("SELECT ProductID, ProductName, Category, Price, Stock, Descript, Discount, ProductImage FROM tblProduct")
@@ -104,15 +153,7 @@ def get_all_products():
             "Discount": row[6],    
             "ProductImage": row[7]
         })
-<<<<<<< HEAD
-    return flask.jsonify(result)
-
-if __name__ == "__main__":
-    app.run(port=5000)
-
-=======
     return jsonify(result)
 
 if __name__ == "__main__":
-    app.run(port=5000)
->>>>>>> zacma05-master
+    app.run(port=5000, debug=True)

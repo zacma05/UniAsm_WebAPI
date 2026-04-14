@@ -31,33 +31,29 @@
 
     <div class="register-container">
         <a href="#" class="brand-logo">Fruitables</a>
-        <h2>Tham gia cùng <span>Gia đình Organic</span></h2>
+        <h2>Cửa hàng <span>thực phẩm sạch</span></h2>
 
-        <form>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Họ</label>
-                    <input type="text" placeholder="Nguyễn" required>
-                </div>
-                <div class="form-group">
-                    <label>Tên</label>
-                    <input type="text" placeholder="An" required>
-                </div>
-            </div>
-
+        <form id="registerForm">
             <div class="form-group">
-                <label>Địa chỉ Email</label>
-                <input type="email" placeholder="example@gmail.com" required>
+                <label>Tên người dùng</label>
+                <input type="text" id="username" placeholder="Họ và tên" required>
+                </div> 
+            <div class="form-group">
+                <label>Số điện thoại</label>
+                <input type="text" id="phone" placeholder="Số điện thoại" required>
             </div>
-
+            <div class="form-group">
+                <label>Địa chỉ</label>
+                <input type="text" id="address" placeholder="Nhập địa chỉ của bạn" required>
+            </div>
             <div class="form-group">
                 <label>Mật khẩu</label>
-                <input type="password" placeholder="Tối thiểu 8 ký tự" required>
+                <input type="password" id="password" placeholder="Nhập mật khẩu" required>
             </div>
 
             <div class="form-group">
                 <label>Xác nhận mật khẩu</label>
-                <input type="password" placeholder="Nhập lại mật khẩu" required>
+                <input type="password" id="confirmPassword" placeholder="Nhập lại mật khẩu" required>
             </div>
 
             <div class="terms">
@@ -69,9 +65,10 @@
         </form>
     </div>
 </body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/lib/easing/easing.min.js"></script>
-    <script src="/static/lib/waypoints/waypoints.min.js"></script>
-    <script src="/static/lib/lightbox/js/lightbox.min.js"></script>
-    <script src="/static/lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/lib/easing/easing.min.js"></script>
+<script src="/static/lib/waypoints/waypoints.min.js"></script>
+<script src="/static/lib/lightbox/js/lightbox.min.js"></script>
+<script src="/static/lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="/static/js/register.js"></script>

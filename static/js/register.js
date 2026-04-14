@@ -1,29 +1,40 @@
-$("#loginForm").on("submit", function(e){
+$("#registerForm").on("submit", function(e){
     e.preventDefault();
 
     const username = $("#username").val();
     const password = $("#password").val();
+    const confirmPassword = $("#confirmPassword").val();
+    const phone = $("#phone").val();
+    const address = $("#address").val();
+    
+    console.log(password,  confirmPassword);
+
+    if(password != confirmPassword){
+        alert("Mật khẩu không không trùng khớp");
+        return;
+    }
+
     $.ajax({
-        url: "/login",
+        url: "/register",
         method: "POST",
         contentType: "application/json",
         data: JSON.stringify({
             username: username,
-            password: password
+            password: password,
+            phone: phone,
+            address: address
         }),
         success: function(res){
-            console.log(res)
-
             if(res.token){
                 localStorage.setItem("token", res.token)
+                alert("Đăng ký thành công")
                 window.location.href = "/"
             }else{
                 alert("Sai tài khoản")
             }
         },
         error: function(err){
-            console.log(err);
-            alert("Login failed");
+            alert(err.responseJSON.error);
         }
     });
 });

@@ -1,10 +1,9 @@
-// const token = localStorage.getItem("token");
+const token = localStorage.getItem("token");
 
-// if(!token) {
-//     window.location.href = "/login";
-// }
-// 2. Hàm AJAX lấy sản phẩm
-// 1. Hàm loadProducts mới: Nhận cả Loại (cat) và Từ khóa (q)
+if(!token) {
+    window.location.href = "/login";
+}
+
 function loadProducts(category = '', searchQuery = '') {
     let url = '/product/getProductsByCate';
     
@@ -52,13 +51,11 @@ function loadProducts(category = '', searchQuery = '') {
     });
 }
 
-// 2. PHẢI CÓ HÀM NÀY: Để khi bấm nút "Tìm kiếm", nó lấy chữ trong ô input và gọi hàm load
 function searchProducts() {
     const keyword = $('#search-input').val(); // Lấy chữ bạn gõ (ví dụ: "Chuối")
     loadProducts('', keyword); // Gọi hàm load với searchQuery = keyword
 }
 
-// 3. Khởi tạo
 $(document).ready(function() {
     loadProducts();
 });
